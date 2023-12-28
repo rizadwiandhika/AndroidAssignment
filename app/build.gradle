@@ -17,9 +17,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-//    viewBinding {
-//        enabled = true
-//    }
+    viewBinding {
+        enabled = true
+    }
 
     buildFeatures {
         viewBinding = true
