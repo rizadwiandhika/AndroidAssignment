@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         binding.componentHomeEWallet.rvEWallet.adapter = eWalletAdapter
         eWalletAdapter.setDataEWallet(dummyData)
         eWalletAdapter.setOnButtonClick { selectedWallet ->
-            Log.d("DEBUGGING", "Button clicked for ${selectedWallet.name}")
+            Log.d("MARKER", "Button clicked for ${selectedWallet.name}")
             dummyData.forEach { w ->
                 if (w.name == selectedWallet.name) {
                     w.isConnected = true
@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
                     w.balance = 100000.0
                 }
             }
-//            eWalletAdapter.setDataEWallet(dummyData)
+            eWalletAdapter.setDataEWallet(dummyData)
         }
     }
 
