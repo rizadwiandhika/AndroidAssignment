@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     private fun handleLogin() {
 //        val loginButton = findViewById<Button>(R.id.btnLogin)
 //        val registerButton = findViewById<Button>(R.id.btnRegister)
-//        val passwordInp = findViewById<EditText>(R.id.etPassword)
 //        val wrongPassword = findViewById<TextView>(R.id.tvWrongPassword)
+//        val passwordInp = findViewById<EditText>(R.id.etPassword)
 
         val password = "password"
         binding.apply {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                   tvWrongPassword.visibility =  View.VISIBLE
               } else {
                   Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
-                  navigateTo(ProfileActivity::class.java)
+                  navigateTo(HomeActivity::class.java)
               }
           }
 
@@ -48,14 +48,18 @@ class MainActivity : AppCompatActivity() {
                 navigateTo(RegisterActivity::class.java)
             }
         }
-
-
     }
 
     private fun navigateTo(c: Class<*>) {
         val intent = Intent(this, c)
         startActivity(intent)
         finish()
+
+        callback(10, op2 = {num -> num + 20}, op1 = {num -> num + 20})
+    }
+
+    private fun callback(num: Int, op1: (Int) -> Int, op2: (Int) -> Int): Int {
+        return op2.invoke(op1.invoke(1));
     }
 
 
