@@ -24,6 +24,9 @@
             <include android:id="@+id/componentHomeEWallet"
                 layout="@layout/component_home_ewallet"/>
 
+            <include android:id="@+id/componentSavingDeposit"
+                layout="@layout/component_home_saving_deposit"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
