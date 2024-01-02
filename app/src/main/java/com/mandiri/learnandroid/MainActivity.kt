@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity() {
           }
 
             btnRegister.setOnClickListener {
-                navigateTo(RegisterActivity::class.java)
+//                navigateTo(RegisterActivity::class.java)
+                navigateTo(HomeActivity::class.java)
             }
         }
     }

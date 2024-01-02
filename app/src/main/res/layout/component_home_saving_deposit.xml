@@ -1,45 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutSavingTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Savings and Checking"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvToggleShowBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show balance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSavingDeposit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutSavingTitle"
         tools:itemCount="5"
-        tools:listitem="@layout/item_saving_deposit"/>
+        tools:listitem="@layout/item_saving_deposit" />
 
     <LinearLayout
-        android:id="@+id/layoutToggleSavingList"
-        app:layout_constraintTop_toBottomOf="@id/rvSavingDeposit"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/llShowMore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvSavingDeposit">
+
         <TextView
-            android:id="@+id/tvViewListMessage"
+            android:id="@+id/tvToggleShowDeposit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Show more..."
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
 
         <ImageView
             android:id="@+id/ivArrowDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_down"/>
+            android:src="@drawable/ic_arrow_down" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llShowLess"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvSavingDeposit">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show less..."
+            android:textAlignment="center" />
 
         <ImageView
             android:id="@+id/ivArrowUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_up"/>
+            android:src="@drawable/ic_arrow_up" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

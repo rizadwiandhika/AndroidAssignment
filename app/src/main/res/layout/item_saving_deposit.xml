@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardElevation="96dp">
+        app:cardElevation="12dp"
+        android:layout_margin="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,10 +53,8 @@
                 android:id="@+id/ivSavingImg"
                 android:layout_width="66dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:adjustViewBounds="true"
-                android:src="@drawable/saving_card"
-                app:layout_constraintEnd_toStartOf="parent" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/saving_card" />
 
         </LinearLayout>
 

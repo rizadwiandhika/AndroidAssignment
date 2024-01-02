@@ -1,25 +1,24 @@
 package com.mandiri.learnandroid
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_ADDRESS
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_AGE
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_GENDER
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_NAME
 import com.mandiri.learnandroid.adapter.EWalletAdapter
+import com.mandiri.learnandroid.adapter.MenuHomeAdapter
 import com.mandiri.learnandroid.adapter.SavingDepositAdapter
 import com.mandiri.learnandroid.databinding.ActivityHomeBinding
-import com.mandiri.learnandroid.databinding.ActivityRegisterBinding
 import com.mandiri.learnandroid.model.EWalletModel
+import com.mandiri.learnandroid.model.MenuModel
 import com.mandiri.learnandroid.model.SavingDepositModel
 
 class HomeActivity : AppCompatActivity() {
+    private var isShowAllSaving: Boolean = false
+    private var isShowBalance: Boolean = false
 
     private val eWalletAdapter = EWalletAdapter()
-    private val savingDepositAdapter = SavingDepositAdapter(false)
+    private val savingDepositAdapter = SavingDepositAdapter(isShowBalance, isShowAllSaving)
 
+    private lateinit var menuHomeAdapter: MenuHomeAdapter;
     private lateinit var binding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +28,41 @@ class HomeActivity : AppCompatActivity() {
 
         renderEWallet()
         renderSavingDeposit()
+        renderMenuHome()
+    }
+
+    private fun renderMenuHome() {
+        menuHomeAdapter = MenuHomeAdapter(createMenuDummyList())
+        binding.componentMenuHome.gridHome.adapter = menuHomeAdapter
     }
 
     private fun renderSavingDeposit() {
-        val data = createSavingDepositDummyList()
-        savingDepositAdapter.setListSavingDeposit(data)
+        val accounts = createSavingDepositDummyList()
+        binding.componentSavingDeposit.rvSavingDeposit.adapter = savingDepositAdapter
 
-        binding.componentSavingDeposit.layoutToggleSavingList.setOnClickListener {
-            savingDepositAdapter.toggleViewAllSaving()
+        savingDepositAdapter.setListSavingDeposit(accounts)
+        savingDepositAdapter.setBalanceVisibility(isShowBalance)
+
+        setDisplayAllSavingAccount(isShowAllSaving)
+
+        binding.componentSavingDeposit.apply {
+            if (accounts.size <= SavingDepositAdapter.MAX_ITEM) {
+                llShowMore.visibility = View.GONE
+                llShowLess.visibility = View.GONE
+            } else {
+                llShowMore.setOnClickListener {
+                    setDisplayAllSavingAccount(true)
+                }
+                llShowLess.setOnClickListener {
+                    setDisplayAllSavingAccount(false)
+                }
+            }
+
+            tvToggleShowBalance.setOnClickListener {
+                handleToggleShowBalance()
+            }
         }
+
     }
 
     private fun renderEWallet() {
@@ -46,7 +71,6 @@ class HomeActivity : AppCompatActivity() {
         binding.componentHomeEWallet.rvEWallet.adapter = eWalletAdapter
         eWalletAdapter.setDataEWallet(dummyData)
         eWalletAdapter.setOnButtonClick { selectedWallet ->
-            Log.d("MARKER", "Button clicked for ${selectedWallet.name}")
             dummyData.forEach { w ->
                 if (w.name == selectedWallet.name) {
                     w.isConnected = true
@@ -56,6 +80,29 @@ class HomeActivity : AppCompatActivity() {
             }
             eWalletAdapter.setDataEWallet(dummyData)
         }
+    }
+
+    private fun setDisplayAllSavingAccount(value: Boolean) {
+        isShowAllSaving = value
+        savingDepositAdapter.setIsShowAll(isShowAllSaving)
+
+        binding.componentSavingDeposit.apply {
+            if (isShowAllSaving) {
+                llShowMore.visibility = View.GONE
+                llShowLess.visibility = View.VISIBLE
+            } else {
+                llShowLess.visibility = View.GONE
+                llShowMore.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun handleToggleShowBalance() {
+        isShowBalance = !isShowBalance
+        savingDepositAdapter.setBalanceVisibility(isShowBalance)
+
+        binding.componentSavingDeposit.tvToggleShowBalance.text =
+            if (isShowBalance) "Hide balance" else "Show balance"
     }
 
     private fun createEWalletDummyList(): MutableList<EWalletModel> {
@@ -122,4 +169,18 @@ class HomeActivity : AppCompatActivity() {
         )
     }
 
+    private fun createMenuDummyList(): MutableList<MenuModel> {
+        return mutableListOf(
+            MenuModel("Transfer", R.drawable.ic_transfer),
+            MenuModel("Top Up", R.drawable.ic_transfer),
+            MenuModel("Payment", R.drawable.ic_transfer),
+            MenuModel("Investment", R.drawable.ic_transfer),
+            MenuModel("Accounts", R.drawable.ic_transfer),
+            MenuModel("Withdrawal", R.drawable.ic_transfer),
+            MenuModel("Credit", R.drawable.ic_transfer),
+            MenuModel("Donate", R.drawable.ic_transfer),
+        );
+    }
+
 }
+
