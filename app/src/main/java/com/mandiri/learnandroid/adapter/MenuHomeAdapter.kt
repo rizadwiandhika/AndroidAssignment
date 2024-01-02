@@ -4,54 +4,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.mandiri.learnandroid.databinding.ItemMenuHomeBinding
+import com.mandiri.learnandroid.databinding.ItemSavingDepositBinding
 import com.mandiri.learnandroid.model.MenuModel
 
 class MenuHomeAdapter(
     private val listMenu: List<MenuModel>
-) : BaseAdapter() {
-    override fun getCount(): Int = listMenu.size
+) : RecyclerView.Adapter<MenuHomeAdapter.ViewHolder>() {
 
-    override fun getItem(p0: Int): Any? = null
+    private lateinit var onMenuClick: (ItemMenuHomeBinding) -> Unit;
 
-    override fun getItemId(p0: Int): Long = 0
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-//        var holder: ViewHolderMenu
-//        val itemView: View
-//
-//        if (convertView == null) {
-//            val binding =
-//                ItemMenuHomeBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
-//
-////            itemView = binding.root
-////            itemView.tag = holder
-//
-//            holder = ViewHolderMenu(binding)
-//            itemView = binding.root
-//            itemView.tag = holder
-//        } else {
-//            holder = convertView.tag as ViewHolderMenu
-//            itemView = convertView
-//        }
-//
-//        holder.binding.tvMenuTitle.text = listMenu[position].name
-//        return itemView
-
-        var view: View
-        var binding: ItemMenuHomeBinding
-
-        if (convertView == null) {
-                binding = ItemMenuHomeBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
-                view = binding.root
-                view.tag = binding
-        } else {
-            view = convertView
-            binding = convertView.tag as ItemMenuHomeBinding
+    inner class ViewHolder(private val binding: ItemMenuHomeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun getBinding(): ItemMenuHomeBinding {
+            return binding;
         }
+    }
 
-        binding.tvMenuTitle.text = listMenu[position].name
-        return view
+    fun setOnMenuClickHandler(handler: (ItemMenuHomeBinding) -> Unit) {
+        onMenuClick = handler
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            ItemMenuHomeBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
+
+    override fun getItemCount(): Int {
+        return listMenu.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val height = (360 until 1080).random()
+
+        val binding = holder.getBinding()
+        val menu = listMenu[position]
+
+        with(binding) {
+            tvMenuTitle.text = "${menu.name} (h: $height px)"
+            ivMenuHome.setImageResource(menu.image)
+
+            clContainer.layoutParams.height = height
+            clContainer.requestLayout()
+
+            clContainer.setOnClickListener { onMenuClick.invoke(this) }
+        }
     }
 
 }
