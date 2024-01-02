@@ -4,25 +4,32 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.mandiri.learnandroid.databinding.ActivityMainBinding
+import com.mandiri.learnandroid.helper.SharedPref
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
-        private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var preferences: SharedPref
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferences  = SharedPref(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        handleLogin()
+        if (doesTokenExist()) {
+            Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
+            navigateTo(HomeActivity::class.java)
+        }
+
+        renderLogin()
     }
 
-    private fun handleLogin() {
+    private fun renderLogin() {
 //        val loginButton = findViewById<Button>(R.id.btnLogin)
 //        val registerButton = findViewById<Button>(R.id.btnRegister)
 //        val wrongPassword = findViewById<TextView>(R.id.tvWrongPassword)
@@ -30,19 +37,30 @@ class MainActivity : AppCompatActivity() {
 
         val password = "password"
         binding.apply {
-          btnLogin.setOnClickListener {
-              tvWrongPassword.visibility = View.INVISIBLE
+            btnLogin.setOnClickListener {
+                tvWrongPassword.visibility = View.INVISIBLE
 
-              if (etPassword.text.isEmpty()) {
-                  Toast.makeText(applicationContext, "Password cannot be empty", Toast.LENGTH_SHORT).show()
-              } else if (etPassword.text.toString() != password) {
-                  Toast.makeText(applicationContext, "Wrong password sorry :(", Toast.LENGTH_SHORT).show()
-                  tvWrongPassword.visibility =  View.VISIBLE
-              } else {
-                  Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
-                  navigateTo(HomeActivity::class.java)
-              }
-          }
+                if (etPassword.text.isEmpty()) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Password cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (etPassword.text.toString() != password) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Wrong password sorry :(",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    tvWrongPassword.visibility = View.VISIBLE
+                } else {
+                    val token = UUID.randomUUID().toString()
+                    preferences.saveToken(token)
+
+                    Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
+                    navigateTo(HomeActivity::class.java)
+                }
+            }
 
             btnRegister.setOnClickListener {
 //                navigateTo(RegisterActivity::class.java)
@@ -51,18 +69,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun doesTokenExist(): Boolean {
+        return preferences.getToken() != ""
+    }
+
     private fun navigateTo(c: Class<*>) {
         val intent = Intent(this, c)
         startActivity(intent)
         finish()
-
-        callback(10, op2 = {num -> num + 20}, op1 = {num -> num + 20})
     }
 
     private fun callback(num: Int, op1: (Int) -> Int, op2: (Int) -> Int): Int {
         return op2.invoke(op1.invoke(1));
     }
-
 
 
     private fun simpleCalculator() {
