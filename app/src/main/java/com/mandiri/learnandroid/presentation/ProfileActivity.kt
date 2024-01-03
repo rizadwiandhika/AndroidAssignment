@@ -1,11 +1,11 @@
-package com.mandiri.learnandroid
+package com.mandiri.learnandroid.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_ADDRESS
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_AGE
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_GENDER
-import com.mandiri.learnandroid.RegisterActivity.Companion.KEY_NAME
+import com.mandiri.learnandroid.presentation.RegisterActivity.Companion.KEY_ADDRESS
+import com.mandiri.learnandroid.presentation.RegisterActivity.Companion.KEY_AGE
+import com.mandiri.learnandroid.presentation.RegisterActivity.Companion.KEY_GENDER
+import com.mandiri.learnandroid.presentation.RegisterActivity.Companion.KEY_NAME
 import com.mandiri.learnandroid.databinding.ActivityProfileBinding
 
 class ProfileActivity: AppCompatActivity() {
