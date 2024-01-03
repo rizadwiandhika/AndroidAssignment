@@ -1,57 +1,68 @@
-package com.mandiri.learnandroid
+package com.mandiri.learnandroid.presentation.home
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.mandiri.learnandroid.R
 import com.mandiri.learnandroid.adapter.EWalletAdapter
 import com.mandiri.learnandroid.adapter.MenuHomeAdapter
 import com.mandiri.learnandroid.adapter.SavingDepositAdapter
-import com.mandiri.learnandroid.databinding.ActivityHomeBinding
+import com.mandiri.learnandroid.databinding.FragmentHomeBinding
 import com.mandiri.learnandroid.helper.SharedPref
 import com.mandiri.learnandroid.model.EWalletModel
 import com.mandiri.learnandroid.model.MenuModel
 import com.mandiri.learnandroid.model.SavingDepositModel
 
-class HomeActivity : AppCompatActivity() {
+class HomeFragment : Fragment() {
+
+	private var _binding: FragmentHomeBinding? = null
+	private val binding get() = _binding!!
 
 	private var isShowAllSaving: Boolean = false
 	private var isShowBalance: Boolean = false
 	private val eWalletAdapter = EWalletAdapter()
 	private val savingDepositAdapter = SavingDepositAdapter(isShowBalance, isShowAllSaving)
+
 	private lateinit var menuHomeAdapter: MenuHomeAdapter
-	private lateinit var binding: ActivityHomeBinding
 	private lateinit var preferences: SharedPref
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		binding = ActivityHomeBinding.inflate(layoutInflater)
-		setContentView(binding.root)
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View? {
+		_binding = FragmentHomeBinding.inflate(inflater, container, false)
+		return binding.root
+	}
 
-		preferences = SharedPref(this)
-
-		if (preferences.getToken().isEmpty()) {
-			Toast.makeText(applicationContext, "Please log in!", Toast.LENGTH_SHORT).show()
-			startActivity(Intent(this, MainActivity::class.java))
-			finish()
-			return
-		}
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
 
 		renderEWallet()
 		renderSavingDeposit()
 		renderMenuHome()
 
-		binding.btnLogout.setOnClickListener {
-			handleLogout()
-		}
+//		binding.btnLogout.setOnClickListener {
+//			handleLogout()
+//		}
 	}
+
+	override fun onDestroyView() {
+		super.onDestroyView()
+
+		// To avoid memory leaks, nullify the binding object when destroy
+		_binding = null
+	}
+
 
 	private fun renderMenuHome() {
 		menuHomeAdapter = MenuHomeAdapter(createMenuDummyList())
 		menuHomeAdapter.setOnMenuClickHandler { binding ->
 			Toast.makeText(
-				applicationContext,
+				context,
 				"Clicking ${binding.tvMenuTitle.text.toString()}!",
 				Toast.LENGTH_SHORT
 			).show()
@@ -86,12 +97,6 @@ class HomeActivity : AppCompatActivity() {
 			}
 		}
 
-	}
-
-	private fun handleLogout() {
-		preferences.clearAll()
-		startActivity(Intent(this, MainActivity::class.java))
-		finish()
 	}
 
 	private fun renderEWallet() {
