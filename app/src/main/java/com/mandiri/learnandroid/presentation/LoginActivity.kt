@@ -1,90 +1,90 @@
 package com.mandiri.learnandroid.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.mandiri.learnandroid.databinding.ActivityLoginBinding
 import com.mandiri.learnandroid.helper.SharedPref
 import java.util.UUID
 
 class LoginActivity : AppCompatActivity() {
 
-	private lateinit var binding: ActivityLoginBinding
-	private lateinit var preferences: SharedPref
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var preferences: SharedPref
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-		preferences = SharedPref(this)
-		binding = ActivityLoginBinding.inflate(layoutInflater)
-		setContentView(binding.root)
+        preferences = SharedPref(this)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
 
-		if (doesTokenExist()) {
-			Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
-			navigateTo(HomeActivity::class.java)
-		}
 
-		renderLogin()
-	}
+        if (doesTokenExist()) {
+            Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
+            navigateTo(HomeActivity::class.java)
+        }
+        setContentView(binding.root)
+        renderLogin()
+    }
 
-	private fun renderLogin() {
+    private fun renderLogin() {
 //        val loginButton = findViewById<Button>(R.id.btnLogin)
 //        val registerButton = findViewById<Button>(R.id.btnRegister)
 //        val wrongPassword = findViewById<TextView>(R.id.tvWrongPassword)
 //        val passwordInp = findViewById<EditText>(R.id.etPassword)
 
-		val password = "password"
-		binding.apply {
-			btnLogin.setOnClickListener {
-				tvWrongPassword.visibility = View.INVISIBLE
+        val password = "password"
+        binding.apply {
+            btnLogin.setOnClickListener {
+                tvWrongPassword.visibility = View.INVISIBLE
 
-				if (etPassword.text.isEmpty()) {
-					Toast.makeText(
-						applicationContext,
-						"Password cannot be empty",
-						Toast.LENGTH_SHORT
-					).show()
-				} else if (etPassword.text.toString() != password) {
-					Toast.makeText(
-						applicationContext,
-						"Wrong password sorry :(",
-						Toast.LENGTH_SHORT
-					).show()
-					tvWrongPassword.visibility = View.VISIBLE
-				} else {
-					val token = UUID.randomUUID().toString()
-					preferences.saveToken(token)
+                if (etPassword.text.isEmpty()) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Password cannot be empty",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (etPassword.text.toString() != password) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Wrong password sorry :(",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    tvWrongPassword.visibility = View.VISIBLE
+                } else {
+                    val token = UUID.randomUUID().toString()
+                    preferences.saveToken(token)
 
-					Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
-					navigateTo(HomeActivity::class.java)
-				}
-			}
+                    Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
+                    navigateTo(HomeActivity::class.java)
+                }
+            }
 
-			btnRegister.setOnClickListener {
+            btnRegister.setOnClickListener {
 //                navigateTo(RegisterActivity::class.java)
-				navigateTo(HomeMainActivity::class.java)
-			}
-		}
-	}
+                navigateTo(HomeMainActivity::class.java)
+            }
+        }
+    }
 
-	private fun doesTokenExist(): Boolean {
-		return preferences.getToken() != ""
-	}
+    private fun doesTokenExist(): Boolean {
+        return preferences.getToken() != ""
+    }
 
-	private fun navigateTo(c: Class<*>) {
-		val intent = Intent(this, c)
-		startActivity(intent)
-		finish()
-	}
+    private fun navigateTo(c: Class<*>) {
+        val intent = Intent(this, c)
+        startActivity(intent)
+        finish()
+    }
 
-	private fun callback(num: Int, op1: (Int) -> Int, op2: (Int) -> Int): Int {
-		return op2.invoke(op1.invoke(1));
-	}
+    private fun callback(num: Int, op1: (Int) -> Int, op2: (Int) -> Int): Int {
+        return op2.invoke(op1.invoke(1));
+    }
 
 
-	private fun simpleCalculator() {
+    private fun simpleCalculator() {
 //        val etInput1 = findViewById<EditText>(R.id.etInputNumber1)
 //        val etInput2 = findViewById<EditText>(R.id.etInputNumber2)
 //
@@ -100,6 +100,6 @@ class LoginActivity : AppCompatActivity() {
 //                tvResult.text = result.toString()
 //            }
 //        }
-	}
+    }
 
 }
