@@ -8,27 +8,113 @@
         android:id="@+id/componentToolbar"
         layout="@layout/component_toolbar" />
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textAlignment="center"
-        android:text="HELLO WORLD" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvTitle"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:text="HELLO WORLD" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvStatus"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/tvTitle"-->
+    <!--        android:textAlignment="center"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:text="STATUS" />-->
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvRecipientLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/componentToolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        android:textAlignment="center"
-        android:layout_marginTop="16dp"
-        android:text="STATUS" />
+        android:text="Recipient" />
+
+    <TextView
+        android:id="@+id/tvRecipient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvRecipientLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="PAULUS MARTUA LAWREN" />
+
+    <TextView
+        android:id="@+id/tvDestination"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvRecipient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Bank Mandiri - ********8020" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/mdDivider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDestination" />
+
+    <TextView
+        android:id="@+id/tvTransferDetailLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/mdDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Transfer Details" />
+
+    <TextView
+        android:id="@+id/tvTotalTransactionLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTransferDetailLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Total Transaction" />
+
+    <TextView
+        android:id="@+id/tvTransactionAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvTotalTransactionLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Rp 10.000" />
+
+    <TextView
+        android:id="@+id/tvSourceOfFundLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvTotalTransactionLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Source of Fund" />
+
+    <TextView
+        android:id="@+id/tvSourceOfFund"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvSourceOfFundLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="RIZA DWI ANDHIKA" />
+
+    <TextView
+        android:id="@+id/tvSourceAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvSourceOfFund"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Bank Mandiri - ********2337" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

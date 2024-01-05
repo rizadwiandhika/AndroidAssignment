@@ -10,7 +10,7 @@ import com.mandiri.learnandroid.model.StatusTransaction.FAILED
 import com.mandiri.learnandroid.model.StatusTransaction.PENDING
 import com.mandiri.learnandroid.model.StatusTransaction.SUCCESS
 
-class HistoryTransactionAdapter(private val data: List<HistoryTransactionModel>) :
+class HistoryTransactionAdapter(private var data: List<HistoryTransactionModel>) :
     RecyclerView.Adapter<HistoryTransactionAdapter.ViewHolder>() {
 
     private lateinit var onClickHandler: (HistoryTransactionModel) -> Unit
@@ -54,7 +54,7 @@ class HistoryTransactionAdapter(private val data: List<HistoryTransactionModel>)
             }
 
             tvDate.text = transaction.date
-            tvTitle.text = transaction.title
+//            tvTitle.text = transaction.title
             tvDescription.text = transaction.description
             tvAmount.text = transaction.amount
 
@@ -77,6 +77,11 @@ class HistoryTransactionAdapter(private val data: List<HistoryTransactionModel>)
 
 
         }
+    }
+
+    fun setData(data: List<HistoryTransactionModel>) {
+        this.data = data
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: ItemHistoryTransactionBinding) :

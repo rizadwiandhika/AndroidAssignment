@@ -33,6 +33,10 @@ class MessageFragment(private val fragmentReplacer: (Fragment) -> Unit) : Fragme
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMessageBinding.inflate(inflater, container, false)
+
+        if (savedInstanceState?.get("") == null) {
+
+        }
         return binding.root
     }
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LearnAndroid</string>
+    <string name="all_transaction">All Transaction</string>
 </resources>

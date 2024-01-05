@@ -24,8 +24,8 @@ class DetailTransactionActivity : AppCompatActivity() {
         val transaction = intent.getParcelableExtra(DATA_TRANSACTION) as HistoryTransactionModel?
 
         with(binding) {
-            tvTitle.text = transaction?.title ?: "No title"
-            tvStatus.text = translateStatus(transaction?.status)
+//            tvTitle.text = transaction?.title ?: "No title"
+//            tvStatus.text = translateStatus(transaction?.status)
             componentToolbar.ivArrowBack.setOnClickListener {
                 onBackPressed()
             }

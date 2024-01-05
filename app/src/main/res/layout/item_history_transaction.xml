@@ -27,7 +27,7 @@
         android:src="@drawable/ic_qr" />
 
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/tvFilterStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/ivIcon"
@@ -40,8 +40,8 @@
         android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="@id/tvFilterStatus"
+        app:layout_constraintTop_toBottomOf="@id/tvFilterStatus"
         app:layout_constraintEnd_toStartOf="@id/tvAmount"
         android:layout_marginTop="4dp"
         android:textSize="11sp"
@@ -51,7 +51,7 @@
         android:id="@+id/tvStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="@id/tvFilterStatus"
         app:layout_constraintTop_toBottomOf="@id/tvDescription"
         app:layout_constraintEnd_toStartOf="@id/tvAmount"
         android:layout_marginTop="4dp"
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvTitle"
+        app:layout_constraintTop_toTopOf="@id/tvFilterStatus"
         android:textStyle="bold"
         android:textSize="16dp"
         android:text="- Rp 100.000" />

@@ -32,6 +32,6 @@ class DetailTransactionFragment(private val transaction: String) : Fragment() {
     }
 
     private fun render() {
-        binding.tvTitle.text = transaction
+        binding.tvTransferDetailLabel.text = transaction
     }
 }

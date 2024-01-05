@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import com.google.android.material.R.layout.support_simple_spinner_dropdown_item
 import com.mandiri.learnandroid.adapter.HistoryTransactionAdapter
 import com.mandiri.learnandroid.databinding.FragmentHistoryTransactionBinding
 import com.mandiri.learnandroid.model.HistoryTransactionModel
@@ -37,8 +40,10 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
     }
 
     private fun render() {
-        val adapter = HistoryTransactionAdapter(generateData())
-        adapter.setOnClickHandler { transaction ->
+        val filter = arrayOf("All Transaction", "Success", "Pending", "Failed")
+        val historyTransactionAdapter = HistoryTransactionAdapter(generateData())
+
+        historyTransactionAdapter.setOnClickHandler { transaction ->
             // When using Fragment
             // fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
 
@@ -46,7 +51,43 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
             DetailTransactionActivity.navigateToDetailTransaction(requireActivity(), transaction)
         }
 
-        binding.rvHistoryTransaction.adapter = adapter
+        binding.apply {
+            rvHistoryTransaction.adapter = historyTransactionAdapter
+            spFilter.adapter = ArrayAdapter(
+                requireContext(),
+                support_simple_spinner_dropdown_item,
+                filter
+            )
+            spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    adapterView: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    val spinnerValue = adapterView?.getItemAtPosition(position).toString()
+                    binding.tvFilterStatus.text = spinnerValue
+                    historyTransactionAdapter.setData(filterByTransactionStatus(spinnerValue))
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        }
+    }
+
+    private fun filterByTransactionStatus(status: String): List<HistoryTransactionModel> {
+        val data = generateData()
+        return if (status == "All Transaction") data else data.filter { data ->
+            when (data.status) {
+                StatusTransaction.SUCCESS.value -> return@filter status == "Success"
+                StatusTransaction.PENDING.value -> return@filter status == "Pending"
+                StatusTransaction.FAILED.value -> return@filter status == "Failed"
+            }
+            return@filter false
+        }
     }
 
     private fun generateData(): List<HistoryTransactionModel> {
