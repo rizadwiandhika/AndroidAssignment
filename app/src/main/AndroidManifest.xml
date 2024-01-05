@@ -25,6 +25,7 @@
         <activity android:name=".presentation.ProfileActivity" />
         <activity android:name=".presentation.RegisterActivity" />
         <activity android:name=".presentation.HomeMainActivity" />
+        <activity android:name=".presentation.message.view.DetailTransactionActivity" />
     </application>
 
 </manifest>

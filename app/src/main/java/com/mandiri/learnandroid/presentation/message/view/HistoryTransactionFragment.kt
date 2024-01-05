@@ -39,7 +39,11 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
     private fun render() {
         val adapter = HistoryTransactionAdapter(generateData())
         adapter.setOnClickHandler { transaction ->
-            fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
+            // When using Fragment
+            // fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
+
+            // When using Activity
+            DetailTransactionActivity.navigateToDetailTransaction(requireActivity(), transaction)
         }
 
         binding.rvHistoryTransaction.adapter = adapter

@@ -58,7 +58,7 @@ class HistoryTransactionAdapter(private val data: List<HistoryTransactionModel>)
             tvDescription.text = transaction.description
             tvAmount.text = transaction.amount
 
-            when (transaction.isSuccess) {
+            when (transaction.status) {
                 SUCCESS.value -> {
                     tvStatus.text = "Success"
                     tvStatus.setTextColor(root.context.getColor(R.color.green))
