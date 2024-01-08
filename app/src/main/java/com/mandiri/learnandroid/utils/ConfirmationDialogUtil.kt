@@ -9,16 +9,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mandiri.learnandroid.R
 import com.mandiri.learnandroid.databinding.DialogLayoutBinding
 
-class ConfirmationDialogUtil private constructor(private val context: Context) {
+class ConfirmationDialogUtil private constructor() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: ConfirmationDialogUtil? = null
 
-        fun getInstance(context: Context): ConfirmationDialogUtil {
+        fun getInstance(): ConfirmationDialogUtil {
             return instance ?: synchronized(this) {
-                instance ?: ConfirmationDialogUtil(context).also {
+                instance ?: ConfirmationDialogUtil().also {
                     instance = it
                 }
             }
@@ -26,6 +26,7 @@ class ConfirmationDialogUtil private constructor(private val context: Context) {
     }
 
     private fun createDialogView(
+        context: Context,
         title: String,
         text: String,
         buttonText: String,
@@ -47,6 +48,7 @@ class ConfirmationDialogUtil private constructor(private val context: Context) {
     }
 
     private fun createDialog(
+        context: Context,
         title: String,
         text: String,
         buttonText: String,
@@ -56,6 +58,7 @@ class ConfirmationDialogUtil private constructor(private val context: Context) {
 //        val dialog = AlertDialog.Builder(context).create()
         val dialog = BottomSheetDialog(context)
         val dialogView = createDialogView(
+            context,
             title,
             text,
             buttonText,
@@ -69,18 +72,25 @@ class ConfirmationDialogUtil private constructor(private val context: Context) {
     }
 
     fun show(
+        context: Context,
         title: String,
         description: String,
         buttonText: String,
         onConfirm: () -> Unit,
         onCancel: () -> Unit
     ) {
-        val dialog = createDialog(title, description, buttonText, onConfirm, onCancel)
+        val dialog = createDialog(context, title, description, buttonText, onConfirm, onCancel)
         dialog.show()
     }
 
-    fun show(title: String, description: String, buttonText: String, onConfirm: () -> Unit) {
-        val dialog = createDialog(title, description, buttonText, onConfirm)
+    fun show(
+        context: Context,
+        title: String,
+        description: String,
+        buttonText: String,
+        onConfirm: () -> Unit
+    ) {
+        val dialog = createDialog(context, title, description, buttonText, onConfirm)
         dialog.show()
     }
 }

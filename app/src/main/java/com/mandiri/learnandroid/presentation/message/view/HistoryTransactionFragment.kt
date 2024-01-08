@@ -32,7 +32,7 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHistoryTransactionBinding.inflate(inflater, container, false)
-        dialog = ConfirmationDialogUtil.getInstance(requireContext())
+        dialog = ConfirmationDialogUtil.getInstance()
         return binding.root
     }
 
@@ -50,6 +50,7 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
             // When using Activity
             val status = enumValues<StatusTransaction>().find { it.value == transaction.status }
             dialog.show(
+                requireContext(),
                 transaction.title,
                 "$status • ${transaction.description}",
                 "See Detail"
