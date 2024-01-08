@@ -22,7 +22,7 @@ class HomeMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        confirmDialog = ConfirmationDialogUtil.getInstance(this)
+        confirmDialog = ConfirmationDialogUtil.getInstance()
         preferences = SharedPref(this)
         binding = HomeMainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -90,6 +90,7 @@ class HomeMainActivity : AppCompatActivity() {
 //            .show()
 
         confirmDialog.show(
+            this,
             "Leaving Livin'?",
             "Make sure that you have completed all your activities! Thank you for using Livin'",
             "Logout",
