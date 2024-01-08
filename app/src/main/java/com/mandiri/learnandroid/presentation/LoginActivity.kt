@@ -1,12 +1,12 @@
 package com.mandiri.learnandroid.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mandiri.learnandroid.databinding.ActivityLoginBinding
 import com.mandiri.learnandroid.helper.SharedPref
+import com.mandiri.learnandroid.utils.Navigation
 import java.util.UUID
 
 class LoginActivity : AppCompatActivity() {
@@ -22,18 +22,13 @@ class LoginActivity : AppCompatActivity() {
 
         if (doesTokenExist()) {
             Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
-            navigateTo(HomeActivity::class.java)
+            Navigation.getInstace().replace(this, HomeMainActivity::class.java)
         }
         setContentView(binding.root)
         renderLogin()
     }
 
     private fun renderLogin() {
-//        val loginButton = findViewById<Button>(R.id.btnLogin)
-//        val registerButton = findViewById<Button>(R.id.btnRegister)
-//        val wrongPassword = findViewById<TextView>(R.id.tvWrongPassword)
-//        val passwordInp = findViewById<EditText>(R.id.etPassword)
-
         val password = "password"
         binding.apply {
             btnLogin.setOnClickListener {
@@ -57,48 +52,19 @@ class LoginActivity : AppCompatActivity() {
                     preferences.saveToken(token)
 
                     Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
-                    navigateTo(HomeActivity::class.java)
+                    Navigation.getInstace()
+                        .replace(this@LoginActivity, HomeMainActivity::class.java)
                 }
             }
 
             btnRegister.setOnClickListener {
-//                navigateTo(RegisterActivity::class.java)
-                navigateTo(HomeMainActivity::class.java)
+                Navigation.getInstace().replace(this@LoginActivity, HomeMainActivity::class.java)
             }
         }
     }
 
     private fun doesTokenExist(): Boolean {
         return preferences.getToken() != ""
-    }
-
-    private fun navigateTo(c: Class<*>) {
-        val intent = Intent(this, c)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun callback(num: Int, op1: (Int) -> Int, op2: (Int) -> Int): Int {
-        return op2.invoke(op1.invoke(1));
-    }
-
-
-    private fun simpleCalculator() {
-//        val etInput1 = findViewById<EditText>(R.id.etInputNumber1)
-//        val etInput2 = findViewById<EditText>(R.id.etInputNumber2)
-//
-//        val tvResult = findViewById<TextView>(R.id.tvResult)
-//        val button = findViewById<Button>(R.id.btnSubmit)
-//
-//        button.setOnClickListener {
-//            if (etInput1.text.isEmpty() || etInput2.text.isEmpty()) {
-//                Toast.makeText(applicationContext, "Input should be provided", Toast.LENGTH_SHORT).show()
-//            } else {
-//                val result = etInput1.text.toString().toInt() * etInput2.text.toString().toInt()
-//                Toast.makeText(applicationContext, "Result = ${result.toString()}", Toast.LENGTH_SHORT).show()
-//                tvResult.text = result.toString()
-//            }
-//        }
     }
 
 }
