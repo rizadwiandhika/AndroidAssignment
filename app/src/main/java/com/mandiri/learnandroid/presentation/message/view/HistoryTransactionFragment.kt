@@ -12,10 +12,12 @@ import com.mandiri.learnandroid.adapter.HistoryTransactionAdapter
 import com.mandiri.learnandroid.databinding.FragmentHistoryTransactionBinding
 import com.mandiri.learnandroid.model.HistoryTransactionModel
 import com.mandiri.learnandroid.model.StatusTransaction
+import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
 
 class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) : Fragment() {
 
     private var _binding: FragmentHistoryTransactionBinding? = null
+    private lateinit var dialog: ConfirmationDialogUtil
 
     private val binding get() = _binding!!
 
@@ -30,25 +32,33 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHistoryTransactionBinding.inflate(inflater, container, false)
+        dialog = ConfirmationDialogUtil.getInstance(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         render()
     }
 
     private fun render() {
         val filter = arrayOf("All Transaction", "Success", "Pending", "Failed")
-        val historyTransactionAdapter = HistoryTransactionAdapter(generateData())
-
-        historyTransactionAdapter.setOnClickHandler { transaction ->
+        val historyTransactionAdapter = HistoryTransactionAdapter(generateData()) { transaction ->
             // When using Fragment
             // fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
 
             // When using Activity
-            DetailTransactionActivity.navigateToDetailTransaction(requireActivity(), transaction)
+            val status = enumValues<StatusTransaction>().find { it.value == transaction.status }
+            dialog.show(
+                transaction.title,
+                "$status • ${transaction.description}",
+                "See Detail"
+            ) {
+                DetailTransactionActivity.navigateToDetailTransaction(
+                    requireActivity(),
+                    transaction
+                )
+            }
         }
 
         binding.apply {
@@ -80,8 +90,8 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
 
     private fun filterByTransactionStatus(status: String): List<HistoryTransactionModel> {
         val data = generateData()
-        return if (status == "All Transaction") data else data.filter { data ->
-            when (data.status) {
+        return if (status == "All Transaction") data else data.filter {
+            when (it.status) {
                 StatusTransaction.SUCCESS.value -> return@filter status == "Success"
                 StatusTransaction.PENDING.value -> return@filter status == "Pending"
                 StatusTransaction.FAILED.value -> return@filter status == "Failed"

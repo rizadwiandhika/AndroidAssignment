@@ -20,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
         preferences = SharedPref(this)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
-
         if (doesTokenExist()) {
             Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
             navigateTo(HomeActivity::class.java)

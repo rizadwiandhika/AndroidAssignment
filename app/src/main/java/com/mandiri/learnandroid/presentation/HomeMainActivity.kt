@@ -3,7 +3,6 @@ package com.mandiri.learnandroid.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -12,15 +11,18 @@ import com.mandiri.learnandroid.databinding.HomeMainActivityBinding
 import com.mandiri.learnandroid.helper.SharedPref
 import com.mandiri.learnandroid.presentation.home.HomeFragment
 import com.mandiri.learnandroid.presentation.message.MessageFragment
+import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
 
 class HomeMainActivity : AppCompatActivity() {
 
     private lateinit var binding: HomeMainActivityBinding
     private lateinit var preferences: SharedPref
+    private lateinit var confirmDialog: ConfirmationDialogUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        confirmDialog = ConfirmationDialogUtil.getInstance(this)
         preferences = SharedPref(this)
         binding = HomeMainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -65,7 +67,7 @@ class HomeMainActivity : AppCompatActivity() {
 
                 R.id.navigationLogout -> {
                     showLogoutDialog()
-                    return@OnNavigationItemSelectedListener true
+                    return@OnNavigationItemSelectedListener false
                 }
             }
             false
@@ -80,12 +82,19 @@ class HomeMainActivity : AppCompatActivity() {
     }
 
     private fun showLogoutDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-            .setMessage("Yakin ingin keluar dari Livin' ?")
-            .setPositiveButton("Ya") { p1, num -> handleLogout() }
-            .setNegativeButton("Tidak") { dialog, num -> }
-            .show()
+//        val builder = AlertDialog.Builder(this)
+//        builder.setTitle("Logout")
+//            .setMessage("Yakin ingin keluar dari Livin' ?")
+//            .setPositiveButton("Ya") { p1, num -> handleLogout() }
+//            .setNegativeButton("Tidak") { dialog, num -> }
+//            .show()
+
+        confirmDialog.show(
+            "Leaving Livin'?",
+            "Make sure that you have completed all your activities! Thank you for using Livin'",
+            "Logout",
+            this::handleLogout
+        )
     }
 
     private fun handleLogout() {
