@@ -3,6 +3,7 @@ package com.mandiri.learnandroid.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -63,10 +64,9 @@ class HomeMainActivity : AppCompatActivity() {
                 }
 
                 R.id.navigationLogout -> {
-                    handleLogout()
+                    showLogoutDialog()
                     return@OnNavigationItemSelectedListener true
                 }
-
             }
             false
         }
@@ -77,6 +77,15 @@ class HomeMainActivity : AppCompatActivity() {
 //			.add(R.id.fragmentContainer, fragment, fragment.javaClass.simpleName)
 //			.addToBackStack(fragment.javaClass.simpleName)
             .commit()
+    }
+
+    private fun showLogoutDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+            .setMessage("Yakin ingin keluar dari Livin' ?")
+            .setPositiveButton("Ya") { p1, num -> handleLogout() }
+            .setNegativeButton("Tidak") { dialog, num -> }
+            .show()
     }
 
     private fun handleLogout() {
