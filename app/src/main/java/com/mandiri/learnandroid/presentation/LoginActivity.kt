@@ -5,19 +5,24 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mandiri.learnandroid.databinding.ActivityLoginBinding
-import com.mandiri.learnandroid.helper.SharedPref
+import com.mandiri.learnandroid.helper.SharedPreferenceHelper
 import com.mandiri.learnandroid.utils.Navigation
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
+import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class LoginActivity :
+    AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var preferences: SharedPref
+
+    @Inject
+    lateinit var preferences: SharedPreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        preferences = SharedPref(this)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         if (doesTokenExist()) {

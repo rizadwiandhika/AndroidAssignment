@@ -8,22 +8,22 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mandiri.learnandroid.R
 import com.mandiri.learnandroid.databinding.HomeMainActivityBinding
-import com.mandiri.learnandroid.helper.SharedPref
+import com.mandiri.learnandroid.helper.SharedPreferenceHelper
 import com.mandiri.learnandroid.presentation.home.HomeFragment
 import com.mandiri.learnandroid.presentation.message.MessageFragment
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
+import javax.inject.Inject
 
-class HomeMainActivity : AppCompatActivity() {
+class HomeMainActivity @Inject constructor(private val sharedPreferenceHelper: SharedPreferenceHelper) :
+    AppCompatActivity() {
 
     private lateinit var binding: HomeMainActivityBinding
-    private lateinit var preferences: SharedPref
     private lateinit var confirmDialog: ConfirmationDialogUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         confirmDialog = ConfirmationDialogUtil.getInstance()
-        preferences = SharedPref(this)
         binding = HomeMainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -44,7 +44,7 @@ class HomeMainActivity : AppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigationHome -> {
-                    replaceFragment(HomeFragment())
+                    replaceFragment(HomeFragment(sharedPreferenceHelper))
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -99,7 +99,7 @@ class HomeMainActivity : AppCompatActivity() {
     }
 
     private fun handleLogout() {
-        preferences.clearAll()
+        sharedPreferenceHelper.clearAll()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }

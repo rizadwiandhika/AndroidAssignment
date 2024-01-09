@@ -9,36 +9,27 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.google.android.material.R.layout.support_simple_spinner_dropdown_item
 import com.mandiri.learnandroid.adapter.HistoryTransactionAdapter
+import com.mandiri.learnandroid.base.BaseFragment
 import com.mandiri.learnandroid.databinding.FragmentHistoryTransactionBinding
 import com.mandiri.learnandroid.model.HistoryTransactionModel
 import com.mandiri.learnandroid.model.StatusTransaction
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
 import com.mandiri.learnandroid.utils.Navigation
 
-class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) : Fragment() {
+class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) :
+    BaseFragment<FragmentHistoryTransactionBinding>() {
 
-    private var _binding: FragmentHistoryTransactionBinding? = null
     private lateinit var dialog: ConfirmationDialogUtil
 
-    private val binding get() = _binding!!
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
+    override fun inflate(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentHistoryTransactionBinding.inflate(inflater, container, false)
-        dialog = ConfirmationDialogUtil.getInstance()
-        return binding.root
+    ): FragmentHistoryTransactionBinding {
+        return FragmentHistoryTransactionBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun setupView(view: View, savedInstanceState: Bundle?) {
         render()
     }
 
