@@ -51,7 +51,7 @@ class DetailTransactionActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val DATA_TRANSACTION = "dataTransaction"
+        const val DATA_TRANSACTION = "dataTransaction"
 
 
         fun navigateToDetailTransaction(activity: Activity, data: HistoryTransactionModel) =

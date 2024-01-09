@@ -13,6 +13,7 @@ import com.mandiri.learnandroid.databinding.FragmentHistoryTransactionBinding
 import com.mandiri.learnandroid.model.HistoryTransactionModel
 import com.mandiri.learnandroid.model.StatusTransaction
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
+import com.mandiri.learnandroid.utils.Navigation
 
 class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) : Fragment() {
 
@@ -55,9 +56,10 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
                 "$status • ${transaction.description}",
                 "See Detail"
             ) {
-                DetailTransactionActivity.navigateToDetailTransaction(
+                Navigation.getInstace().goto(
                     requireActivity(),
-                    transaction
+                    DetailTransactionActivity::class.java,
+                    mapOf(DetailTransactionActivity.DATA_TRANSACTION to transaction)
                 )
             }
         }
