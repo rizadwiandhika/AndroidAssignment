@@ -39,6 +39,7 @@ class SavingDepositAdapter(
     }
 
     override fun getItemCount(): Int {
+        if (listSavingDeposit.size == 0) return 0
         if (isShowAllSaving) {
             return listSavingDeposit.size
         }
