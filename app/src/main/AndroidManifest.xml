@@ -24,7 +24,6 @@
         </activity>
         <activity android:name=".presentation.LoginActivity" />
         <activity android:name=".presentation.GridActivity" />
-        <activity android:name=".presentation.HomeActivity" />
         <activity android:name=".presentation.ProfileActivity" />
         <activity android:name=".presentation.RegisterActivity" />
         <activity android:name=".presentation.HomeMainActivity" />
