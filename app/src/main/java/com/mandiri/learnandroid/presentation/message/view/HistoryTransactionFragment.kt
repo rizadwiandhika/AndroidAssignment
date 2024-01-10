@@ -15,11 +15,15 @@ import com.mandiri.learnandroid.model.HistoryTransactionModel
 import com.mandiri.learnandroid.model.StatusTransaction
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
 import com.mandiri.learnandroid.utils.Navigation
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) :
     BaseFragment<FragmentHistoryTransactionBinding>() {
 
-    private lateinit var dialog: ConfirmationDialogUtil
+    @Inject
+    lateinit var dialog: ConfirmationDialogUtil
 
     override fun inflate(
         inflater: LayoutInflater,

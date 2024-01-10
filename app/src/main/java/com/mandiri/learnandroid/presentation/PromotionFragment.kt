@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.mandiri.learnandroid.base.BaseFragment
 import com.mandiri.learnandroid.databinding.FragmentPromotionBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PromotionFragment : BaseFragment<FragmentPromotionBinding>() {
     override fun setupView(view: View, savedInstanceState: Bundle?) {
     }

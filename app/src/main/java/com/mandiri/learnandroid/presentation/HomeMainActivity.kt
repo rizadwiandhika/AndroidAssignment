@@ -12,13 +12,16 @@ import com.mandiri.learnandroid.helper.SharedPreferenceHelper
 import com.mandiri.learnandroid.presentation.home.HomeFragment
 import com.mandiri.learnandroid.presentation.message.MessageFragment
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class HomeMainActivity @Inject constructor(private val sharedPreferenceHelper: SharedPreferenceHelper) :
-    AppCompatActivity() {
-
+@AndroidEntryPoint
+class HomeMainActivity : AppCompatActivity() {
     private lateinit var binding: HomeMainActivityBinding
     private lateinit var confirmDialog: ConfirmationDialogUtil
+
+    @Inject
+    lateinit var sharedPreferenceHelper: SharedPreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class HomeMainActivity @Inject constructor(private val sharedPreferenceHelper: S
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigationHome -> {
-                    replaceFragment(HomeFragment(sharedPreferenceHelper))
+                    replaceFragment(HomeFragment())
                     return@OnNavigationItemSelectedListener true
                 }
 

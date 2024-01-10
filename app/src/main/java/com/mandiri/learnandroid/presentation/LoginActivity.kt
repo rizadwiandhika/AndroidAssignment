@@ -12,8 +12,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginActivity :
-    AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 

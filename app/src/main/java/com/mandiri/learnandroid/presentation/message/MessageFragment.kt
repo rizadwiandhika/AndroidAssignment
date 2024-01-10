@@ -11,7 +11,9 @@ import com.mandiri.learnandroid.base.BaseFragment
 import com.mandiri.learnandroid.databinding.FragmentMessageBinding
 import com.mandiri.learnandroid.presentation.message.view.HistoryTransactionFragment
 import com.mandiri.learnandroid.presentation.message.view.NotificationFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MessageFragment(private val fragmentReplacer: (Fragment) -> Unit) :
     BaseFragment<FragmentMessageBinding>() {
 

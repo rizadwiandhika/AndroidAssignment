@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.mandiri.learnandroid.base.BaseFragment
 import com.mandiri.learnandroid.databinding.FragmentSettingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 
     override fun inflate(

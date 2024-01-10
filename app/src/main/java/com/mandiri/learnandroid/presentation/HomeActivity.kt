@@ -15,7 +15,7 @@ import com.mandiri.learnandroid.model.EWalletModel
 import com.mandiri.learnandroid.model.MenuModel
 import com.mandiri.learnandroid.model.SavingDepositModel
 
-class HomeActivity constructor() : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private var isShowAllSaving: Boolean = false
     private var isShowBalance: Boolean = false

@@ -15,10 +15,11 @@ import com.mandiri.learnandroid.helper.SharedPreferenceHelper
 import com.mandiri.learnandroid.model.EWalletModel
 import com.mandiri.learnandroid.model.MenuModel
 import com.mandiri.learnandroid.model.SavingDepositModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class HomeFragment @Inject constructor(private val preferences: SharedPreferenceHelper) :
-    BaseFragment<FragmentHomeBinding>() {
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private var isShowAllSaving: Boolean = false
     private var isShowBalance: Boolean = false
@@ -26,6 +27,9 @@ class HomeFragment @Inject constructor(private val preferences: SharedPreference
     private val savingDepositAdapter = SavingDepositAdapter(isShowBalance, isShowAllSaving)
 
     private lateinit var menuHomeAdapter: MenuHomeAdapter
+
+    @Inject
+    lateinit var preferences: SharedPreferenceHelper
 
     override fun inflate(
         inflater: LayoutInflater,

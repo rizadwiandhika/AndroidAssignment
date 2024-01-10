@@ -9,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mandiri.learnandroid.R
 import com.mandiri.learnandroid.databinding.DialogLayoutBinding
 
-class ConfirmationDialogUtil private constructor() {
+class ConfirmationDialogUtil {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
