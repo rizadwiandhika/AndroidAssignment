@@ -10,11 +10,10 @@ import com.mandiri.learnandroid.model.StatusTransaction.FAILED
 import com.mandiri.learnandroid.model.StatusTransaction.PENDING
 import com.mandiri.learnandroid.model.StatusTransaction.SUCCESS
 
-class HistoryTransactionAdapter(
-    private var data: List<HistoryTransactionModel>,
-    private val onClickHandler: (HistoryTransactionModel) -> Unit
-) :
+class HistoryTransactionAdapter(private val onClickHandler: (HistoryTransactionModel) -> Unit) :
     RecyclerView.Adapter<HistoryTransactionAdapter.ViewHolder>() {
+
+    private var data: List<HistoryTransactionModel> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

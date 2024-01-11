@@ -2,7 +2,7 @@ package com.mandiri.learnandroid.module
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.mandiri.learnandroid.helper.SharedPreferenceHelper
+import com.mandiri.learnandroid.utils.SharedPreferenceHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

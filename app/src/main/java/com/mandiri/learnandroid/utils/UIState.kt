@@ -1,10 +1,13 @@
 package com.mandiri.learnandroid.utils
 
+import com.mandiri.learnandroid.constant.enums.UIStateStatus
+import com.mandiri.learnandroid.constant.enums.UIStateStatus.LOADING
+
 class UIState<T>(private var _data: T?) {
     private var _error: Error? = null
-    private var _status: Status = Status.SUCCESS
+    private var _status: UIStateStatus = LOADING
 
-    
+
     var data: T?
         get() = _data
         set(value) {
@@ -17,15 +20,11 @@ class UIState<T>(private var _data: T?) {
             _error = value
         }
 
-    var status: Status
+    var status: UIStateStatus
         get() = _status
         set(value) {
             _status = value
         }
 
 
-}
-
-enum class Status {
-    LOADING, SUCCESS, ERROR
 }

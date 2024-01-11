@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mandiri.learnandroid.R
 import com.mandiri.learnandroid.databinding.HomeMainActivityBinding
-import com.mandiri.learnandroid.helper.SharedPreferenceHelper
+import com.mandiri.learnandroid.utils.SharedPreferenceHelper
 import com.mandiri.learnandroid.presentation.home.HomeFragment
 import com.mandiri.learnandroid.presentation.message.MessageFragment
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
@@ -62,9 +62,7 @@ class HomeMainActivity : AppCompatActivity() {
                 }
 
                 R.id.navigationMessage -> {
-                    replaceFragment(MessageFragment() { f ->
-                        replaceFragment(f)
-                    })
+                    replaceFragment(MessageFragment(::replaceFragment))
                     return@OnNavigationItemSelectedListener true
                 }
 

@@ -2,73 +2,77 @@ package com.mandiri.learnandroid.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.mandiri.learnandroid.constant.enums.LoginStatus.ALREADY_LOGGED_IN
+import com.mandiri.learnandroid.constant.enums.LoginStatus.EMPTY
+import com.mandiri.learnandroid.constant.enums.LoginStatus.INVALID_CREDENTIAL
+import com.mandiri.learnandroid.constant.enums.LoginStatus.SUCCESS
 import com.mandiri.learnandroid.databinding.ActivityLoginBinding
-import com.mandiri.learnandroid.helper.SharedPreferenceHelper
+import com.mandiri.learnandroid.presentation.viewmodel.LoginViewModel
 import com.mandiri.learnandroid.utils.Navigation
+import com.mandiri.learnandroid.utils.ToastUtil
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.UUID
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
+    private val loginViewModel: LoginViewModel by viewModels<LoginViewModel>()
+
     private lateinit var binding: ActivityLoginBinding
 
     @Inject
-    lateinit var preferences: SharedPreferenceHelper
+    lateinit var navigation: Navigation
+
+    @Inject
+    lateinit var toast: ToastUtil
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
-        if (doesTokenExist()) {
-            Toast.makeText(applicationContext, "You're already login!", Toast.LENGTH_SHORT).show()
-            Navigation.getInstace().replace(this, HomeMainActivity::class.java)
-        }
         setContentView(binding.root)
-        renderLogin()
+
+        loginViewModel.checkIfHasBeenAuthenticated()
+        
+        setupView()
+        observeViewModel()
     }
 
-    private fun renderLogin() {
-        val password = "password"
-        binding.apply {
-            btnLogin.setOnClickListener {
-                tvWrongPassword.visibility = View.INVISIBLE
+    private fun setupView() {
+        binding.btnLogin.setOnClickListener {
+            loginViewModel.authenticate(binding.etPassword.text.toString())
+        }
 
-                if (etPassword.text.isEmpty()) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Password cannot be empty",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else if (etPassword.text.toString() != password) {
-                    Toast.makeText(
-                        applicationContext,
-                        "Wrong password sorry :(",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    tvWrongPassword.visibility = View.VISIBLE
-                } else {
-                    val token = UUID.randomUUID().toString()
-                    preferences.saveToken(token)
+        binding.btnRegister.setOnClickListener {
+            navigation.replace(this@LoginActivity, HomeMainActivity::class.java)
+        }
+    }
 
-                    Toast.makeText(applicationContext, "Welcome admin!", Toast.LENGTH_SHORT).show()
-                    Navigation.getInstace()
-                        .replace(this@LoginActivity, HomeMainActivity::class.java)
+    private fun observeViewModel() {
+        loginViewModel.authenticationLiveData.observe(this) {
+            binding.tvWrongPassword.visibility = View.INVISIBLE
+            if (it == null) return@observe
+
+            when (it) {
+                SUCCESS -> navigation.replace(this, HomeMainActivity::class.java)
+                ALREADY_LOGGED_IN -> {
+                    toast.show("Already Logged In")
+                    navigation.replace(this, HomeMainActivity::class.java)
+                }
+
+                EMPTY -> {
+                    toast.show("Password cannot be empty")
+                }
+
+                INVALID_CREDENTIAL -> {
+                    binding.tvWrongPassword.visibility = View.VISIBLE
+                    toast.show("Wrong password sorry :(")
                 }
             }
-
-            btnRegister.setOnClickListener {
-                Navigation.getInstace().replace(this@LoginActivity, HomeMainActivity::class.java)
-            }
         }
     }
 
-    private fun doesTokenExist(): Boolean {
-        return preferences.getToken() != ""
-    }
 
 }

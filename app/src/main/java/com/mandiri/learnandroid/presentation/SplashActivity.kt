@@ -14,7 +14,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            Navigation.getInstace().replace(this@SplashActivity, LoginActivity::class.java)
+            Navigation.getInstance().replace(this@SplashActivity, LoginActivity::class.java)
         }, 1500)
     }
 

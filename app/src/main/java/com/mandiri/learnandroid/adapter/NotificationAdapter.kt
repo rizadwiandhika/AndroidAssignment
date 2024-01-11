@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mandiri.learnandroid.databinding.ItemNotificationBinding
 import com.mandiri.learnandroid.model.NotificationModel
 
-class NotificationAdapter(private var notifications: List<NotificationModel>) :
-    RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+class NotificationAdapter() : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+    private var notifications: List<NotificationModel> = listOf()
 
     inner class ViewHolder(private val itemBinding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {

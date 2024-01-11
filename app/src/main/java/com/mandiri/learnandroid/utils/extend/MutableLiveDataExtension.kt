@@ -1,12 +1,12 @@
 package com.mandiri.learnandroid.utils.extend
 
 import androidx.lifecycle.MutableLiveData
-import com.mandiri.learnandroid.utils.Status
+import com.mandiri.learnandroid.constant.enums.UIStateStatus
 import com.mandiri.learnandroid.utils.UIState
 
 fun <T> MutableLiveData<UIState<T>>.postLoading() {
     postValue(UIState<T>(null).also {
-        it.status = Status.LOADING
+        it.status = UIStateStatus.LOADING
         it.error = null
         value = it
     })
@@ -17,7 +17,7 @@ fun <T> MutableLiveData<UIState<T>>.postSuccess(incomingData: T) {
         throw RuntimeException("value of MutableLiveData is null!")
     }
     with(value!!) {
-        status = Status.SUCCESS
+        status = UIStateStatus.SUCCESS
         data = incomingData
         error = null
     }
@@ -31,7 +31,7 @@ fun <T> MutableLiveData<UIState<T>>.postError(err: Error) {
         throw RuntimeException("value of MutableLiveData is null!")
     }
     with(value!!) {
-        status = Status.ERROR
+        status = UIStateStatus.ERROR
         data = null
         error = err
     }

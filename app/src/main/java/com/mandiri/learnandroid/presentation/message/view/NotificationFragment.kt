@@ -9,19 +9,20 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.mandiri.learnandroid.adapter.NotificationAdapter
 import com.mandiri.learnandroid.base.BaseFragment
+import com.mandiri.learnandroid.constant.enums.UIStateStatus.ERROR
+import com.mandiri.learnandroid.constant.enums.UIStateStatus.LOADING
+import com.mandiri.learnandroid.constant.enums.UIStateStatus.SUCCESS
 import com.mandiri.learnandroid.databinding.FragmentNotificationBinding
+import com.mandiri.learnandroid.model.NotificationModel
 import com.mandiri.learnandroid.presentation.viewmodel.NotificationViewModel
-import com.mandiri.learnandroid.utils.Status
+import com.mandiri.learnandroid.utils.UIState
 
 
 class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
-    private var _notificationAdapter: NotificationAdapter? = null
-
-    private val notificationAdapter get() = _notificationAdapter!!
-
     private val notificationViewModel: NotificationViewModel by viewModels()
 
+    private lateinit var notificationAdapter: NotificationAdapter
 
     override fun inflate(
         inflater: LayoutInflater,
@@ -36,7 +37,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     }
 
     private fun renderNotificationList() {
-        _notificationAdapter = NotificationAdapter(listOf())
+        notificationAdapter = NotificationAdapter()
+
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(),
             LinearLayout.VERTICAL
@@ -46,31 +48,35 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
         binding.rvNotification.addItemDecoration(dividerItemDecoration)
 
         notificationViewModel.fetchNotification()
-        notificationViewModel.notificationData.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    binding.tvMessage.visibility = View.GONE
-                    binding.rvNotification.visibility = View.VISIBLE
-                    notificationAdapter.setNotifications(it.data!!)
-                }
+        notificationViewModel.notificationData.observe(
+            viewLifecycleOwner,
+            ::displayNotificationData
+        )
+    }
 
-                Status.LOADING -> {
-                    binding.tvMessage.apply {
-                        text = "Loading..."
-                        visibility = View.VISIBLE
-                    }
-                    binding.rvNotification.visibility = View.GONE
-                }
+    private fun displayNotificationData(it: UIState<List<NotificationModel>>) {
+        when (it.status) {
+            SUCCESS -> {
+                binding.tvMessage.visibility = View.GONE
+                binding.rvNotification.visibility = View.VISIBLE
+                notificationAdapter.setNotifications(it.data!!)
+            }
 
-                Status.ERROR -> {
-                    binding.tvMessage.apply {
-                        text = it.error?.message
-                        visibility = View.VISIBLE
-                    }
-                    binding.rvNotification.visibility = View.GONE
+            LOADING -> {
+                binding.tvMessage.apply {
+                    text = "Loading..."
+                    visibility = View.VISIBLE
                 }
+                binding.rvNotification.visibility = View.GONE
+            }
+
+            ERROR -> {
+                binding.tvMessage.apply {
+                    text = it.error?.message
+                    visibility = View.VISIBLE
+                }
+                binding.rvNotification.visibility = View.GONE
             }
         }
     }
-
 }

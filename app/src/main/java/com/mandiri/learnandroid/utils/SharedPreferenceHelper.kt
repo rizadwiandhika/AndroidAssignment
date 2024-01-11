@@ -1,4 +1,4 @@
-package com.mandiri.learnandroid.helper
+package com.mandiri.learnandroid.utils
 
 import android.content.SharedPreferences
 

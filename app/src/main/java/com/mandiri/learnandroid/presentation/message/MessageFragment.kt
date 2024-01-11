@@ -37,7 +37,6 @@ class MessageFragment(private val fragmentReplacer: (Fragment) -> Unit) :
     private fun setupTabView() {
         val tabLayout = binding.tabMessage
         val viewPager = binding.vpMessage
-//        tabLayout.visibility = View.GONE
         _adapterMessage = MessageTabAdapter(this)
 
         adapterMessage.addFragment(NotificationFragment())
@@ -46,13 +45,8 @@ class MessageFragment(private val fragmentReplacer: (Fragment) -> Unit) :
         viewPager.adapter = adapterMessage
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> {
-                    tab.text = "Notification"
-                }
-
-                1 -> {
-                    tab.text = "History"
-                }
+                0 -> tab.text = "Notification"
+                1 -> tab.text = "History"
             }
         }.attach()
         viewPager.setCurrentItem(1, false)

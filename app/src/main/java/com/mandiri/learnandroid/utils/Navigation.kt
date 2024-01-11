@@ -11,7 +11,7 @@ class Navigation {
 
         private var instance: Navigation? = null
 
-        fun getInstace(): Navigation {
+        fun getInstance(): Navigation {
             return instance ?: synchronized(this) {
                 instance ?: Navigation()
             }

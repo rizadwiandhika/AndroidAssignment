@@ -1,20 +1,15 @@
 package com.mandiri.learnandroid.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.mandiri.learnandroid.databinding.ItemMenuHomeBinding
-import com.mandiri.learnandroid.databinding.ItemSavingDepositBinding
 import com.mandiri.learnandroid.model.MenuModel
 
-class MenuHomeAdapter(
-    private val listMenu: List<MenuModel>
-) : RecyclerView.Adapter<MenuHomeAdapter.ViewHolder>() {
+class MenuHomeAdapter : RecyclerView.Adapter<MenuHomeAdapter.ViewHolder>() {
 
-    private lateinit var onMenuClick: (ItemMenuHomeBinding) -> Unit;
+    private lateinit var onMenuClick: (ItemMenuHomeBinding) -> Unit
+    private var listMenu: MutableList<MenuModel> = mutableListOf()
 
     inner class ViewHolder(private val binding: ItemMenuHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,6 +20,11 @@ class MenuHomeAdapter(
 
     fun setOnMenuClickHandler(handler: (ItemMenuHomeBinding) -> Unit) {
         onMenuClick = handler
+    }
+
+    fun setListMenu(menu: MutableList<MenuModel>) {
+        listMenu = menu
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

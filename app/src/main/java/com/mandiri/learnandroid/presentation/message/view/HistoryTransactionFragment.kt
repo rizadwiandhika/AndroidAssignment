@@ -7,14 +7,19 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.R.layout.support_simple_spinner_dropdown_item
 import com.mandiri.learnandroid.adapter.HistoryTransactionAdapter
 import com.mandiri.learnandroid.base.BaseFragment
+import com.mandiri.learnandroid.constant.enums.UIStateStatus
 import com.mandiri.learnandroid.databinding.FragmentHistoryTransactionBinding
 import com.mandiri.learnandroid.model.HistoryTransactionModel
 import com.mandiri.learnandroid.model.StatusTransaction
+import com.mandiri.learnandroid.presentation.viewmodel.HistoryTransactionViewModel
 import com.mandiri.learnandroid.utils.ConfirmationDialogUtil
 import com.mandiri.learnandroid.utils.Navigation
+import com.mandiri.learnandroid.utils.ToastUtil
+import com.mandiri.learnandroid.utils.UIState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,8 +27,22 @@ import javax.inject.Inject
 class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Unit) :
     BaseFragment<FragmentHistoryTransactionBinding>() {
 
+    companion object {
+        val filter = arrayOf("All Transaction", "Success", "Pending", "Failed")
+    }
+
+    private val viewModel: HistoryTransactionViewModel by viewModels<HistoryTransactionViewModel>()
+
+    private lateinit var historyTransactionAdapter: HistoryTransactionAdapter
+
     @Inject
     lateinit var dialog: ConfirmationDialogUtil
+
+    @Inject
+    lateinit var navigation: Navigation
+
+    @Inject
+    lateinit var toast: ToastUtil
 
     override fun inflate(
         inflater: LayoutInflater,
@@ -35,129 +54,79 @@ class HistoryTransactionFragment(private val fragmentReplacer: (Fragment) -> Uni
 
     override fun setupView(view: View, savedInstanceState: Bundle?) {
         render()
+        fetchData()
+        observeViewModel()
     }
 
     private fun render() {
-        val filter = arrayOf("All Transaction", "Success", "Pending", "Failed")
-        val historyTransactionAdapter = HistoryTransactionAdapter(generateData()) { transaction ->
-            // When using Fragment
-            // fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
+        historyTransactionAdapter = HistoryTransactionAdapter(::handleHistoryTransactionClicked)
+        val filterAdapter =
+            ArrayAdapter(requireContext(), support_simple_spinner_dropdown_item, filter)
 
-            // When using Activity
-            val status = enumValues<StatusTransaction>().find { it.value == transaction.status }
-            dialog.show(
-                requireContext(),
-                transaction.title,
-                "$status • ${transaction.description}",
-                "See Detail"
+        binding.rvHistoryTransaction.adapter = historyTransactionAdapter
+        binding.spFilter.adapter = filterAdapter
+
+        binding.spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                p3: Long
             ) {
-                Navigation.getInstace().goto(
-                    requireActivity(),
-                    DetailTransactionActivity::class.java,
-                    mapOf(DetailTransactionActivity.DATA_TRANSACTION to transaction)
-                )
+                val spinnerValue = adapterView?.getItemAtPosition(position).toString()
+
+                binding.tvFilterStatus.text = spinnerValue
+                viewModel.filterByTransactionStatus(spinnerValue)
             }
-        }
 
-        binding.apply {
-            rvHistoryTransaction.adapter = historyTransactionAdapter
-            spFilter.adapter = ArrayAdapter(
-                requireContext(),
-                support_simple_spinner_dropdown_item,
-                filter
-            )
-            spFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    adapterView: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    p3: Long
-                ) {
-                    val spinnerValue = adapterView?.getItemAtPosition(position).toString()
-                    binding.tvFilterStatus.text = spinnerValue
-                    historyTransactionAdapter.setData(filterByTransactionStatus(spinnerValue))
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
-                }
-
+            override fun onNothingSelected(p0: AdapterView<*>?) {
             }
+
         }
     }
 
-    private fun filterByTransactionStatus(status: String): List<HistoryTransactionModel> {
-        val data = generateData()
-        return if (status == "All Transaction") data else data.filter {
-            when (it.status) {
-                StatusTransaction.SUCCESS.value -> return@filter status == "Success"
-                StatusTransaction.PENDING.value -> return@filter status == "Pending"
-                StatusTransaction.FAILED.value -> return@filter status == "Failed"
-            }
-            return@filter false
-        }
+    private fun fetchData() {
+        viewModel.fetchHistoryTransactions()
     }
 
-    private fun generateData(): List<HistoryTransactionModel> {
-        return listOf(
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "QR Payment",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.PENDING.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "Transfer",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.SUCCESS.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "Transfer",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.FAILED.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "QR Payment",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.SUCCESS.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "QR Payment",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.SUCCESS.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "Transfer",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.SUCCESS.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "QR Payment",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.PENDING.value
-            ),
-            HistoryTransactionModel(
-                "03 Jan 2024",
-                "QR Payment",
-                "Rp 100.000",
-                "Pembayaran QR ke TOIS VAPOR DEPOK 311259196512",
-                StatusTransaction.FAILED.value
-            ),
+    private fun observeViewModel() {
+        viewModel.historyTransactionLiveData.observe(
+            viewLifecycleOwner,
+            ::displayHistoryTransactions
         )
     }
 
+    private fun displayHistoryTransactions(uiState: UIState<List<HistoryTransactionModel>>) {
+        when (uiState.status) {
+            UIStateStatus.LOADING -> {}
+            UIStateStatus.SUCCESS -> {
+                historyTransactionAdapter.setData(uiState.data ?: mutableListOf())
+            }
+
+            UIStateStatus.ERROR -> {
+                toast.show("Fetch error for history transactions")
+            }
+        }
+    }
+
+    private fun handleHistoryTransactionClicked(transaction: HistoryTransactionModel) {
+        // When using Fragment
+        // fragmentReplacer.invoke(DetailTransactionFragment(transaction.title))
+
+        // When using Activity
+        val status = enumValues<StatusTransaction>().find { it.value == transaction.status }
+        dialog.show(
+            requireContext(),
+            transaction.title,
+            "$status • ${transaction.description}",
+            "See Detail"
+        ) {
+            navigation.goto(
+                requireActivity(),
+                DetailTransactionActivity::class.java,
+                mapOf(DetailTransactionActivity.DATA_TRANSACTION to transaction)
+            )
+        }
+    }
 
 }
