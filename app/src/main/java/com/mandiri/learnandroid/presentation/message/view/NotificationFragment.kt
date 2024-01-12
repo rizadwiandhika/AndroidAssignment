@@ -34,11 +34,12 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
     override fun setupView(view: View, savedInstanceState: Bundle?) {
         renderNotificationList()
+        fetchData()
+        observeViewModel()
     }
 
     private fun renderNotificationList() {
         notificationAdapter = NotificationAdapter()
-
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(),
             LinearLayout.VERTICAL
@@ -46,8 +47,13 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
         binding.rvNotification.adapter = notificationAdapter
         binding.rvNotification.addItemDecoration(dividerItemDecoration)
+    }
 
+    private fun fetchData() {
         notificationViewModel.fetchNotification()
+    }
+
+    private fun observeViewModel() {
         notificationViewModel.notificationData.observe(
             viewLifecycleOwner,
             ::displayNotificationData
